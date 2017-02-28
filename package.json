@@ -1,0 +1,27 @@
+{
+  "name": "jalex",
+  "version": "0.1.0",
+  "description": "Just Another LEXer is a lexical analyzer compatible with Jison.",
+  "keywords": [
+    "jison",
+    "lex",
+    "lexer",
+    "lexical analysis",
+    "token",
+    "tokenizer"
+  ],
+  "license": "MIT",
+  "author": "Cory Cook (http://corycook.github.io/)",
+  "main": "jalex.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corycook/jalex.git"
+  },
+  "bugs": {
+    "url": "https://github.com/corycook/jalex/issues"
+  },
+  "homepage": "https://github.com/corycook/jalex#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
