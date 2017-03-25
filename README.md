@@ -7,7 +7,7 @@ Just Another Lexer is a jison-compatible lexical analyzer with streaming capabil
 Create an instance of Jalex and add rules to watch for on the input.
 
 ```JavaScript
-var Jalex = require("../jalex");
+var Jalex = require('jalex');
 var lex = new Jalex();
 
 // match tokens
@@ -27,8 +27,20 @@ Jalex will execute the handler for the longest matching rule.
 
 ### addRule
 
-The addRule function accepts a regular expression and a callback.
-Both arguments are required
+The addRule function accepts a regular expression and a handler function.
+Both arguments are required. 
+
+The regular expression matches are spread to the arguments of the handler. 
+So the first argument is the entire match, the second argument is the 
+first subgroup, and so forth.
+
+```JavaScript
+lex.addRule(/\s+(\w+)/, (match, name) => {
+    console.log(name); // "word"
+    return 'NAME';
+});
+lex.write("   word");
+```
 
 ## As Jison Lexer
 
@@ -46,7 +58,7 @@ lex.addRule(/\s+/, () => { });
 var Parser = require('jison').Parser;
 var parser = new Parser({
     bnf: {
-        S: ["ID", "return 'token';"]
+        S: ["ID EOF", "return 'token';"]
     }
 });
 
@@ -71,10 +83,13 @@ lex.addRule(/\w+/, function(match) {
 
 var parser = new Parser({
     bnf: {
-        S: ["ID", "return yytext;"]
+        S: ["ID EOF", "return yytext;"]
     }
 });
 ```
+
+Be sure to set **yytext** via the **this** argument as Jison
+creates a cloned instance of Jalex during parsing.
 
 ## Source mapping with yyloc
 
@@ -83,12 +98,12 @@ the Jalex instance will be updated to indicate the
 position of the token. It has the following
 values to assist with source mapping:
 
-- *first_index*: the index in the input file where the current match starts
-- *last_index*: the index in the input file where the current match ends
-- *first_line*: the line on which the current match begins
-- *last_line*: the line on which the current match ends
-- *first_column*: the index on the first line where the current match begins
-- *last_column*: the index on the last line where the current match ends
+- *first_index* the index in the input file where the current match starts
+- *last_index* the index in the input file where the current match ends
+- *first_line* the line on which the current match begins
+- *last_line* the line on which the current match ends
+- *first_column* the index on the first line where the current match begins
+- *last_column* the index on the last line where the current match ends
 
 The yyloc values should not be altered as the values are 
 incremental rather than absolute.
